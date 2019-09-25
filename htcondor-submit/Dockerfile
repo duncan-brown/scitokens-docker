@@ -44,7 +44,9 @@ RUN systemctl enable httpd
 COPY hostkey.pem /etc/pki/tls/private/localhost.key
 COPY hostcert.pem /etc/pki/tls/certs/localhost.crt
 COPY igtf-ca-bundle.crt /etc/pki/tls/certs/server-chain.crt
-RUN perl -e 's/^#SSLCertificateChainFile/SSLCertificateChainFile/g' /etc/httpd/conf.d/ssl.conf
+RUN mv /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.orig && \
+    sed 's/#SSLCertificateChainFile/SSLCertificateChainFile/g' /etc/httpd/conf.d/ssl.conf.orig > /etc/httpd/conf.d/ssl.conf && \
+    rm -f /etc/httpd/conf.d/ssl.conf.orig
 
 RUN yum -y install python2-pip
 RUN pip install --upgrade pip
