@@ -77,4 +77,7 @@ RUN sed s+__CLIENT_ID__+${SCITOKENS_CLIENT_ID}+g /etc/condor/config.d/60-oauth-t
     echo ${SCITOKENS_CLIENT_SECRET} > /etc/condor/.secrets/scitokens && \
     chmod 600 /etc/condor/.secrets/scitokens
 
+COPY test.sub /home/${SUBMIT_USER}/test.sub
+RUN chown ${UID}:${GID} /home/${SUBMIT_USER}/test.sub
+
 CMD ["/usr/sbin/init"]
